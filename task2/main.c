@@ -52,13 +52,18 @@ void finilize() {
     MPI_Finalize();
 }
 
+void looping() {
+    for (int i = 0; i < 10; i++) {
+#pragma omp parallel for num_threads(2)
+    }
+}
+
 int main(int argc, char * argv[]) {
     int size, rank;
     start(argc, argv, &size, &rank);
     syncThreads();
     printf("%d %d", size, rank);
     
-    #pragma omp parallel for num_threads(2)
     finilize();
     return 0;
 }
