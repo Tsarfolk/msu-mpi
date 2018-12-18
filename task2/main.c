@@ -53,8 +53,8 @@ void finilize() {
 }
 
 void looping() {
+    #pragma omp parallel for num_threads(2)
     for (int i = 0; i < 10; i++) {
-#pragma omp parallel for num_threads(2)
     }
 }
 
