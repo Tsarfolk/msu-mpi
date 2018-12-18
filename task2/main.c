@@ -38,7 +38,7 @@ void distribution() {
     
 }
 
-void start(int argc, const char * argv[], int *size, int *rank) {
+void start(int argc, char * argv[], int *size, int *rank) {
     MPI_Init(&argc, &argv);
     MPI_Comm_size(MPI_COMM_WORLD, size);
     MPI_Comm_rank(MPI_COMM_WORLD, rank);
@@ -48,7 +48,7 @@ void syncThreads() {
     MPI_Barrier(MPI_COMM_WORLD);
 }
 
-int main(int argc, const char * argv[]) {
+int main(int argc, char * argv[]) {
     int size, rank;
     start(argc, argv, &size, &rank);
     syncThreads();
