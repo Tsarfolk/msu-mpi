@@ -58,6 +58,7 @@ int main(int argc, char * argv[]) {
     syncThreads();
     printf("%d %d", size, rank);
     
+    #pragma omp parallel for num_threads(2)
     finilize();
     return 0;
 }
