@@ -48,11 +48,16 @@ void syncThreads() {
     MPI_Barrier(MPI_COMM_WORLD);
 }
 
+void finilize() {
+    MPI_Finalize();
+}
+
 int main(int argc, char * argv[]) {
     int size, rank;
     start(argc, argv, &size, &rank);
     syncThreads();
     printf("%d %d", size, rank);
     
+    finilize();
     return 0;
 }
