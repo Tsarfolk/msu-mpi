@@ -1,5 +1,6 @@
 #!/bin/bash
 
+rm -f output.log error.log
 if [ $1 = "512" ] 
 then
 	mpisubmit.bg -n $1 -w 00:05:00 -m smp -e "OMP_NUM_THREADS=2" --stdout output.log --stderr error.log main $2 $3 $4
