@@ -25,6 +25,8 @@
 /* Begin PBXFileReference section */
 		7D9D199621C986CE0027E492 /* task2 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = task2; sourceTree = BUILT_PRODUCTS_DIR; };
 		7D9D199921C986CE0027E492 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
+		7D9D19A221C9A0AA0027E492 /* make.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = make.sh; sourceTree = "<group>"; };
+		7D9D19A321C9A0AA0027E492 /* run.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = run.sh; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +60,8 @@
 			isa = PBXGroup;
 			children = (
 				7D9D199921C986CE0027E492 /* main.c */,
+				7D9D19A221C9A0AA0027E492 /* make.sh */,
+				7D9D19A321C9A0AA0027E492 /* run.sh */,
 			);
 			path = task2;
 			sourceTree = "<group>";

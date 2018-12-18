@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <math.h>
 #include <stdbool.h>
-//#include "mpi.h"
-//#include "omp.h"
+#include "mpi.h"
+#include "omp.h"
 
 double Lx = M_PI;
 double Ly = M_PI;
@@ -39,22 +39,20 @@ void distribution() {
 }
 
 void start(int argc, const char * argv[], int *size, int *rank) {
-//    MPI_Init(&argc, &argv);
-//    MPI_Comm_size(MPI_COMM_WORLD, size);
-//    MPI_Comm_rank(MPI_COMM_WORLD, rank);
+    MPI_Init(&argc, &argv);
+    MPI_Comm_size(MPI_COMM_WORLD, size);
+    MPI_Comm_rank(MPI_COMM_WORLD, rank);
 }
 
 void syncThreads() {
-//    MPI_Barrier(MPI_COMM_WORLD);
+    MPI_Barrier(MPI_COMM_WORLD);
 }
-
-
 
 int main(int argc, const char * argv[]) {
     int size, rank;
     start(argc, argv, &size, &rank);
     syncThreads();
-    printf("<#const char *restrict, ...#>")
+    printf("%d %d", size, rank);
     
     return 0;
 }
