@@ -534,15 +534,15 @@ int main(int argc, char * argv[]) {
     }
     
     syncThreads();
-    startTimer(&executionTime);
-    
-    calcualteDistribution(&range, &rankMultiplier, processCount);
-    convertRankToPoint(rank, range, &coordinate);
-    
-    initIteratorParams(gridSize, &step, &baseCoordinate, &dotsNumber, coordinate, range);
-    XYZ uSize = init(1, dotsNumber.x, dotsNumber.x * dotsNumber.y);
-    calculateU(&u, uSize, dotsNumber, baseCoordinate, step);
-    calculate(dotsNumber, coordinate, range, uSize, u, rankMultiplier, step, baseCoordinate, rank, gridSteps, processCount, executionTime);
+//    startTimer(&executionTime);
+//    
+//    calcualteDistribution(&range, &rankMultiplier, processCount);
+//    convertRankToPoint(rank, range, &coordinate);
+//    
+//    initIteratorParams(gridSize, &step, &baseCoordinate, &dotsNumber, coordinate, range);
+//    XYZ uSize = init(1, dotsNumber.x, dotsNumber.x * dotsNumber.y);
+//    calculateU(&u, uSize, dotsNumber, baseCoordinate, step);
+//    calculate(dotsNumber, coordinate, range, uSize, u, rankMultiplier, step, baseCoordinate, rank, gridSteps, processCount, executionTime);
     
     syncThreads();
     finilize();
