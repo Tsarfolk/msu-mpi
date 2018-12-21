@@ -537,7 +537,7 @@ int main(int argc, char * argv[]) {
     syncThreads();
     startTimer(&executionTime);
     
-    calcualteDistribution(&range, &rankMultiplier, processCount);
+    calcualteDistribution(&range, &rankMultiplier, rank);
     convertRankToPoint(rank, range, &coordinate);
     initIteratorParams(gridSize, &step, &baseCoordinate, &dotsNumber, coordinate, range);
     
