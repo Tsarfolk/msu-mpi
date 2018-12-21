@@ -130,10 +130,6 @@ void startTimer(double *time) {
     *time = MPI_Wtime();
 }
 
-void finishTimer(double *time) {
-    *time = MPI_Wtime() - *time;
-}
-
 void finilize() {
     MPI_Finalize();
 }
@@ -458,8 +454,8 @@ void calculate(XYZ dotsNumber, XYZ coordinate, XYZ range, XYZ uSize, AXYZ u, XYZ
         t += tau;
     }
     
-        MPI_Barrier(MPI_COMM_WORLD);
-        executionTime = MPI_Wtime() - executionTime;
+    MPI_Barrier(MPI_COMM_WORLD);
+    executionTime = MPI_Wtime() - executionTime;
     
     norm = 0;
     for(point.x = 0; point.x < dotsNumber.x; point.x += 1) {
@@ -489,7 +485,7 @@ void calculate(XYZ dotsNumber, XYZ coordinate, XYZ range, XYZ uSize, AXYZ u, XYZ
             norm += norms[i];
         }
         norm = sqrt(norm);
-        printf("norm over all is %f; time: %f\n", norm, time);
+        printf("norm over all is %f; time: %f\n", norm, executionTime);
         free(r);
     } else {
         printf("norm for process %d is %lf", rank, norm);
@@ -546,7 +542,7 @@ int main(int argc, char * argv[]) {
     initIteratorParams(gridSize, &step, &baseCoordinate, &dotsNumber, coordinate, range);
     XYZ uSize = init(1, dotsNumber.x, dotsNumber.x * dotsNumber.y);
     calculateU(&u, uSize, dotsNumber, baseCoordinate, step);
-    calculate(dotsNumber, coordinate, range, uSize, u, rankMultiplier, step, baseCoordinate, rank, gridSteps, processCount, &executionTime);
+    calculate(dotsNumber, coordinate, range, uSize, u, rankMultiplier, step, baseCoordinate, rank, gridSteps, processCount, executionTime);
     
     syncThreads();
     finishTimer(&executionTime);
