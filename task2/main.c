@@ -345,7 +345,7 @@ void calculate(XYZ dotsNumber, XYZ coordinate, XYZ range, XYZ uSize, AXYZ u, XYZ
             }
         }
     
-        инициализация пересылок
+//        инициализация пересылок
         int cnt = 0;
         for(int i = 0; i < 2 * 3; ++i){
             if (msg_l[i] > 0){
