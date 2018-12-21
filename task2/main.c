@@ -454,7 +454,7 @@ void calculate(XYZ dotsNumber, XYZ coordinate, XYZ range, XYZ uSize, AXYZ u, XYZ
         t += tau;
     }
     
-    MPI_Barrier(MPI_COMM_WORLD);
+    syncThreads();
     executionTime = MPI_Wtime() - executionTime;
     
     norm = 0;
@@ -547,9 +547,8 @@ int main(int argc, char * argv[]) {
     
     XYZ uSize = init(1, dotsNumber.x, dotsNumber.x * dotsNumber.y);
     calculateU(&u, uSize, dotsNumber, baseCoordinate, step);
-//    calculate(dotsNumber, coordinate, range, uSize, u, rankMultiplier, step, baseCoordinate, rank, gridSteps, processCount, executionTime);
+    calculate(dotsNumber, coordinate, range, uSize, u, rankMultiplier, step, baseCoordinate, rank, gridSteps, processCount, executionTime);
     
-    syncThreads();
     finilize();
     return 0;
 }
