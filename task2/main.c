@@ -537,8 +537,10 @@ int main(int argc, char * argv[]) {
     syncThreads();
     startTimer(&executionTime);
     
-    calcualteDistribution(&range, &rankMultiplier, rank);
+    calcualteDistribution(&range, &rankMultiplier, processCount);
     convertRankToPoint(rank, range, &coordinate);
+    printf("Rank is");
+    print(coordinate);
     initIteratorParams(gridSize, &step, &baseCoordinate, &dotsNumber, coordinate, range);
     
     XYZ uSize = init(1, dotsNumber.x, dotsNumber.x * dotsNumber.y);
