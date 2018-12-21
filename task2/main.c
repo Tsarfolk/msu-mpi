@@ -542,7 +542,7 @@ int main(int argc, char * argv[]) {
     
     calcualteDistribution(&range, &rankMultiplier, processCount);
     convertRankToPoint(rank, range, &coordinate);
-    printf("Rank is");
+    printf("Rank is %d", rank);
     print(coordinate);
     initIteratorParams(gridSize, &step, &baseCoordinate, &dotsNumber, coordinate, range);
     
