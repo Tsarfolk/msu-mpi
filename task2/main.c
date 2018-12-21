@@ -236,8 +236,7 @@ void calculate(XYZ dotsNumber, XYZ coordinate, XYZ range, XYZ uSize, AXYZ u, XYZ
                 recv[i % 2 == 0 ? i + 1 : i - 1] = tmp;
             } else {
                 int calculatedRank = convertPointToRank(range, rankMultiplier, coordinate);
-                printf("My rank is %d, calcluated = %d, cnt = %d", rank, calculatedRank, cnt);
-                print(coordinate);
+                printf("Rank is %d|| Rank is (%d, %d, %d)", rank, coordinate.x, coordinate.y, coordinate.z);
                 MPI_Send_init(send[i], msg_l[i] * srHelper[i / 2][2], MPI_DOUBLE, calculatedRank, i % 2, MPI_COMM_WORLD, &(request[cnt]));
                 cnt += 1;
                 MPI_Recv_init(recv[i], msg_l[i] * srHelper[i / 2][2], MPI_DOUBLE, calculatedRank, (i + 1) % 2, MPI_COMM_WORLD, &(request[cnt]));
@@ -324,7 +323,7 @@ void calculate(XYZ dotsNumber, XYZ coordinate, XYZ range, XYZ uSize, AXYZ u, XYZ
 //            }
 //        }
 //    }
-//    
+//
 //    //вот где все веселье начиается
 //    double norm = 0;
 //    double t = tau;
@@ -347,7 +346,7 @@ void calculate(XYZ dotsNumber, XYZ coordinate, XYZ range, XYZ uSize, AXYZ u, XYZ
 //                }
 //            }
 //        }
-//    
+//
 ////        инициализация пересылок
 //        int cnt = 0;
 //        for(int i = 0; i < 2 * 3; ++i){
@@ -455,7 +454,7 @@ void calculate(XYZ dotsNumber, XYZ coordinate, XYZ range, XYZ uSize, AXYZ u, XYZ
 //        u.y = tmp;
 //        t += tau;
 //    }
-//    
+//
 //    syncThreads();
 //    executionTime = MPI_Wtime() - executionTime;
 //
@@ -472,7 +471,7 @@ void calculate(XYZ dotsNumber, XYZ coordinate, XYZ range, XYZ uSize, AXYZ u, XYZ
 //            }
 //        }
 //    }
-//    
+//
 //    if (rank == 0) {
 //        double *norms = calloc(processCount, sizeof(double));
 //        norms[0] = norm;
