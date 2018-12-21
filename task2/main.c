@@ -555,7 +555,9 @@ int main(int argc, char * argv[]) {
         printf("Tau %lf\n", gridSteps);
     }
     
+    printf("sync threads\n");
     syncThreads();
+    printf("continue threads\n");
     startTimer(&executionTime);
     
     calcualteDistribution(&range, &rankMultiplier, processCount);
