@@ -365,7 +365,7 @@ void calculate(XYZ dotsNumber, XYZ coordinate, XYZ range, XYZ uSize, AXYZ u, XYZ
                 (i % 2 == 0) ? addValueAt(i / 2, -1, &coordinate) : addValueAt(i / 2, 1, &coordinate);
             }
         }
-        пересылки
+//        пересылки
         MPI_Startall(cnt, request);
         MPI_Waitall(cnt, request, MPI_STATUSES_IGNORE);
 
