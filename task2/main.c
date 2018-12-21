@@ -198,8 +198,16 @@ void calculate(XYZ dotsNumber, XYZ coordinate, XYZ range, XYZ uSize, AXYZ u, XYZ
     srHelper[1][2] = dotsNumber.x * dotsNumber.z;
     srHelper[2][2] = dotsNumber.x * dotsNumber.y;
     
-    short msg_l[2 * 3] = {2, 1, 1, 2, 1, 1}; // 101
+    short msg_l[2 * 3] = {1, 1, 1, 1, 1, 1}; // 101
+    short cond[3] = {1, 0, 1};
     for (int i = 0; i < 2 * 3; ++i) {
+        if(valueAt(i / 2, coordinate) == (i % 2 == 0 ? 0 : valueAt(i / 2, range) - 1)){
+            if (cond[i / 2] == 1){
+                --(msg_l[i]);  //1го рода
+            }else{
+                ++(msg_l[i]);  //переодические
+            }
+        }
         send[i] = malloc(msg_l[i] * srHelper[i / 2][2] * sizeof(double));
         recv[i] = malloc(msg_l[i] * srHelper[i / 2][2] * sizeof(double));
     }
