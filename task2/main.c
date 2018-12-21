@@ -373,123 +373,123 @@ void calculate(XYZ dotsNumber, XYZ coordinate, XYZ range, XYZ uSize, AXYZ u, XYZ
         //#pragma omp parallel for num_threads(2)
 
 //        //считаем Лапласса и u^n+1 за одно
-//        for (point.x = 0; point.x < dotsNumber.x; point.x += 1) {
-//            for (point.y = 0; point.y < dotsNumber.y; point.y += 1) {
-//                for (point.z = 0; point.z < dotsNumber.z; point.z += 1) {
-//                    double delta = 0, d[3];
-//                    long long int ind;
-//                    bool f = false;
-//                    for(int i = 0; i < 3; ++i){
-//                        double ub = 0, uc, uf;
-//                        ind = scalar(point, uSize);
-//                        uc = u.y[ind];
-//
-//                        if (valueAt(i, point) == 0) {
-//                            if (msg_l[2 * i] == 0) {
-//                                uc = 0;
-//                                f = true;
-//                            }
-//                            long long int recvIndex = valueAt(index_inf[2 * i], point) * srHelper[i][0] + valueAt(index_inf[2 * i + 1], point) * srHelper[i][1];
-//                            if (msg_l[2 * i] == 1) {
-//                                ub = recv[2 * i][recvIndex];
-//                            }
-//                            if (msg_l[2 * i] == 2){
-//                                //ub = recv; uc = recv;
-//                                ub = recv[2 * i][recvIndex];
-//                                uc = recv[2 * i][recvIndex];
-//                            }
-//                        } else{
-//                            addValueAt(i, -1, &point);
-//                            ind = scalar(point, uSize);
-//                            ub = u.y[ind];
-//                            addValueAt(i, 1, &point);
-//                        }
-//                        if (valueAt(i, point) == valueAt(i, dotsNumber) - 1) {
-//                            if (msg_l[2 * i + 1] == 0){
-//                                uf = -ub; uc = 0;
-//                                f = true;
-//                            }
-//                            long long int recvIndex = valueAt(index_inf[2 * i], point) * srHelper[i][0] + valueAt(index_inf[2 * i + 1], point) * srHelper[i][1];
-//                            if (msg_l[2 * i + 1] == 1) {
-//                                uf = recv[2 * i + 1][recvIndex];
-//                            }
-//                            if (msg_l[2 * i + 1] == 2){
-//                                //ub = recv; uc = recv;
-//                                uc = recv[2 * i + 1][recvIndex];
-//                                uf = recv[2 * i + 1][recvIndex];
-//                            }
-//                        } else {
-//                            addValueAt(i, 1, &point);
-//                            ind = scalar(point, uSize);
-//                            uf = u.y[ind];
-//                            addValueAt(i, -1, &point);
-//                        }
-//                        if (valueAt(i, point) == 0 && msg_l[2 * i] == 0) {
-//                            ub = -uf;
-//                        }
-//                        d[i] = ub - 2 * uc + uf;
-//                        d[i] /= fvalueAt(i, step) * fvalueAt(i, step);
-//
-//                        delta += d[i];
-//                    }
-//                    ind = scalar(point, uSize);
-//                    if (f) {
-//                        FXYZ fpoint = finit(baseCoordinate.x + step.x * point.x,
-//                                            baseCoordinate.y + step.y * point.y,
-//                                            baseCoordinate.z + step.z * point.z);
-//                        u.z[ind] = ut(fpoint, t + tau);
-//                    } else {
-//                        u.z[ind] = 2 * u.y[ind] - u.x[ind] + tau * tau * delta;
-//                    }
-//                }
-//            }
-//        }
-//
-//        //перебрасываем указатели, экономим память
-//        double *tmp = u.z;
-//        u.z = u.x;
-//        u.x = u.y;
-//        u.y = tmp;
-//        t += tau;
-//    }
+        for (point.x = 0; point.x < dotsNumber.x; point.x += 1) {
+            for (point.y = 0; point.y < dotsNumber.y; point.y += 1) {
+                for (point.z = 0; point.z < dotsNumber.z; point.z += 1) {
+                    double delta = 0, d[3];
+                    long long int ind;
+                    bool f = false;
+                    for(int i = 0; i < 3; ++i){
+                        double ub = 0, uc, uf;
+                        ind = scalar(point, uSize);
+                        uc = u.y[ind];
+
+                        if (valueAt(i, point) == 0) {
+                            if (msg_l[2 * i] == 0) {
+                                uc = 0;
+                                f = true;
+                            }
+                            long long int recvIndex = valueAt(index_inf[2 * i], point) * srHelper[i][0] + valueAt(index_inf[2 * i + 1], point) * srHelper[i][1];
+                            if (msg_l[2 * i] == 1) {
+                                ub = recv[2 * i][recvIndex];
+                            }
+                            if (msg_l[2 * i] == 2){
+                                //ub = recv; uc = recv;
+                                ub = recv[2 * i][recvIndex];
+                                uc = recv[2 * i][recvIndex];
+                            }
+                        } else{
+                            addValueAt(i, -1, &point);
+                            ind = scalar(point, uSize);
+                            ub = u.y[ind];
+                            addValueAt(i, 1, &point);
+                        }
+                        if (valueAt(i, point) == valueAt(i, dotsNumber) - 1) {
+                            if (msg_l[2 * i + 1] == 0){
+                                uf = -ub; uc = 0;
+                                f = true;
+                            }
+                            long long int recvIndex = valueAt(index_inf[2 * i], point) * srHelper[i][0] + valueAt(index_inf[2 * i + 1], point) * srHelper[i][1];
+                            if (msg_l[2 * i + 1] == 1) {
+                                uf = recv[2 * i + 1][recvIndex];
+                            }
+                            if (msg_l[2 * i + 1] == 2){
+                                //ub = recv; uc = recv;
+                                uc = recv[2 * i + 1][recvIndex];
+                                uf = recv[2 * i + 1][recvIndex];
+                            }
+                        } else {
+                            addValueAt(i, 1, &point);
+                            ind = scalar(point, uSize);
+                            uf = u.y[ind];
+                            addValueAt(i, -1, &point);
+                        }
+                        if (valueAt(i, point) == 0 && msg_l[2 * i] == 0) {
+                            ub = -uf;
+                        }
+                        d[i] = ub - 2 * uc + uf;
+                        d[i] /= fvalueAt(i, step) * fvalueAt(i, step);
+
+                        delta += d[i];
+                    }
+                    ind = scalar(point, uSize);
+                    if (f) {
+                        FXYZ fpoint = finit(baseCoordinate.x + step.x * point.x,
+                                            baseCoordinate.y + step.y * point.y,
+                                            baseCoordinate.z + step.z * point.z);
+                        u.z[ind] = ut(fpoint, t + tau);
+                    } else {
+                        u.z[ind] = 2 * u.y[ind] - u.x[ind] + tau * tau * delta;
+                    }
+                }
+            }
+        }
+
+        //перебрасываем указатели, экономим память
+        double *tmp = u.z;
+        u.z = u.x;
+        u.x = u.y;
+        u.y = tmp;
+        t += tau;
+    }
     
-//    syncThreads();
-//    executionTime = MPI_Wtime() - executionTime;
-//
-//    norm = 0;
-//    for(point.x = 0; point.x < dotsNumber.x; point.x += 1) {
-//        for(point.y = 0; point.y < dotsNumber.y; point.y += 1) {
-//            for(point.z = 0; point.z < dotsNumber.z; point.z += 1) {
-//                long long int ind = scalar(point, uSize);
-//                FXYZ fpoint = finit(baseCoordinate.x + step.x * point.x,
-//                                    baseCoordinate.y + step.y * point.y,
-//                                    baseCoordinate.z + step.z * point.z);
-//                double diff = u.y[ind] - ut(fpoint, t);
-//                norm += diff * diff;
-//            }
-//        }
-//    }
+    syncThreads();
+    executionTime = MPI_Wtime() - executionTime;
+
+    norm = 0;
+    for(point.x = 0; point.x < dotsNumber.x; point.x += 1) {
+        for(point.y = 0; point.y < dotsNumber.y; point.y += 1) {
+            for(point.z = 0; point.z < dotsNumber.z; point.z += 1) {
+                long long int ind = scalar(point, uSize);
+                FXYZ fpoint = finit(baseCoordinate.x + step.x * point.x,
+                                    baseCoordinate.y + step.y * point.y,
+                                    baseCoordinate.z + step.z * point.z);
+                double diff = u.y[ind] - ut(fpoint, t);
+                norm += diff * diff;
+            }
+        }
+    }
     
-//    if (rank == 0) {
-//        double *norms = calloc(processCount, sizeof(double));
-//        norms[0] = norm;
-//        MPI_Request *r = malloc(processCount * sizeof(MPI_Request));
-//        for(int i = 1; i < processCount; ++i){
-//            MPI_Recv_init(&(norms[i]), 1, MPI_DOUBLE, i, 0, MPI_COMM_WORLD, &(r[i - 1]));
-//        }
-//        MPI_Startall(processCount - 1, r);
-//        MPI_Waitall(processCount - 1, r, MPI_STATUSES_IGNORE);
-//        norm = 0;
-//        for(int i = 0; i < processCount; ++i){
-//            norm += norms[i];
-//        }
-//        norm = sqrt(norm);
-//        printf("norm over all is %f; time: %f\n", norm, executionTime);
-//        free(r);
-//    } else {
-//        printf("norm for process %d is %lf", rank, norm);
-//        MPI_Send(&norm, 1, MPI_DOUBLE, 0, 0, MPI_COMM_WORLD);
-//    }
+    if (rank == 0) {
+        double *norms = calloc(processCount, sizeof(double));
+        norms[0] = norm;
+        MPI_Request *r = malloc(processCount * sizeof(MPI_Request));
+        for(int i = 1; i < processCount; ++i){
+            MPI_Recv_init(&(norms[i]), 1, MPI_DOUBLE, i, 0, MPI_COMM_WORLD, &(r[i - 1]));
+        }
+        MPI_Startall(processCount - 1, r);
+        MPI_Waitall(processCount - 1, r, MPI_STATUSES_IGNORE);
+        norm = 0;
+        for(int i = 0; i < processCount; ++i){
+            norm += norms[i];
+        }
+        norm = sqrt(norm);
+        printf("norm over all is %f; time: %f\n", norm, executionTime);
+        free(r);
+    } else {
+        printf("norm for process %d is %lf", rank, norm);
+        MPI_Send(&norm, 1, MPI_DOUBLE, 0, 0, MPI_COMM_WORLD);
+    }
     
     free(u.x);
     free(u.y);
