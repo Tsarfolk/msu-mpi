@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <math.h>
 #include <stdbool.h>
-//#include "mpi.h"
-//#include "omp.h"
+#include "mpi.h"
+#include "omp.h"
 
 typedef struct CPoint XYZ;
 typedef struct APoint AXYZ;
