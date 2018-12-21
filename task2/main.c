@@ -179,6 +179,7 @@ void parseCLIParams(char * argv[], int argc, int *gridSize, double *gridSteps) {
 }
 
 void calculate(XYZ dotsNumber, XYZ coordinate, XYZ range, XYZ uSize, AXYZ u, XYZ rankMultiplier, FXYZ step, FXYZ baseCoordinate, int rank, double T_fin, int processCount, double executionTime) {
+    printf("[182] My rank is %d", rank);
     int count = 2 * 2 * 3;
     MPI_Request *request = malloc(count * sizeof(MPI_Request));
     
@@ -253,6 +254,7 @@ void calculate(XYZ dotsNumber, XYZ coordinate, XYZ range, XYZ uSize, AXYZ u, XYZ
                 cnt += 1;
             }
             (i % 2 == 0) ? addValueAt(i / 2, 1, &coordinate) : addValueAt(i / 2, -1, &coordinate);
+            printf("[235] My rank is %d", rank);
         }
         
         printf("1");
@@ -561,9 +563,11 @@ int main(int argc, char * argv[]) {
     initIteratorParams(gridSize, &step, &baseCoordinate, &dotsNumber, coordinate, range);
     
     XYZ uSize = init(1, dotsNumber.x, dotsNumber.x * dotsNumber.y);
+    printf("[565] My rank is %d", rank);
     calculateU(&u, uSize, dotsNumber, baseCoordinate, step);
+    printf("[567] My rank is %d", rank);
     calculate(dotsNumber, coordinate, range, uSize, u, rankMultiplier, step, baseCoordinate, rank, gridSteps, processCount, executionTime);
-    
+    printf("[569] My rank is %d", rank);
     finilize();
     return 0;
 }
