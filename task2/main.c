@@ -236,6 +236,7 @@ void calculate(XYZ dotsNumber, XYZ coordinate, XYZ range, XYZ uSize, AXYZ u, XYZ
         } else {
             int calculatedRank = convertPointToRank(range, rankMultiplier, coordinate);
             printf("My rank is %d, calcluated = %d, cnt = %d", rank, calculatedRank, cnt);
+            print(coordinate);
             MPI_Send_init(send[i], msg_l[i] * srHelper[i / 2][2], MPI_DOUBLE, calculatedRank, i % 2, MPI_COMM_WORLD, &(request[cnt]));
             cnt += 1;
             MPI_Recv_init(recv[i], msg_l[i] * srHelper[i / 2][2], MPI_DOUBLE, calculatedRank, (i + 1) % 2, MPI_COMM_WORLD, &(request[cnt]));
