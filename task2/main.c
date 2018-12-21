@@ -211,8 +211,8 @@ void calculate(XYZ dotsNumber, XYZ coordinate, XYZ range, XYZ uSize, AXYZ u, XYZ
         send[i] = malloc(msg_l[i] * srHelper[i / 2][2] * sizeof(double));
         recv[i] = malloc(msg_l[i] * srHelper[i / 2][2] * sizeof(double));
     }
-    printf("Rank is %d, msg_l is %d %d %d %d %d %d", rank, msg_l[0],msg_l[1],msg_l[2],msg_l[3],msg_l[4],msg_l[5]);
-//    
+    printf("Rank is %d, msg_l is %d %d %d %d %d %d\n", rank, msg_l[0],msg_l[1],msg_l[2],msg_l[3],msg_l[4],msg_l[5]);
+//
 //    //подготовка массивов обмена данных
 //    for(int i = 0; i < 2 * 3; i += 1){
 //        int i0 = i / 2, i1 = index_inf[2 * (i / 2)], i2 = index_inf[2 * (i / 2) + 1];
