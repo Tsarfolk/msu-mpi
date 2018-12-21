@@ -234,6 +234,7 @@ void calculate(XYZ dotsNumber, XYZ coordinate, XYZ range, XYZ uSize, AXYZ u, XYZ
     
     int cnt = 0; //реальное колическво пересылок
     //инициализация пересылок
+    printf("Rank is %d, msg_l is %d %d %d %d %d %d", rank, msg_l[0],msg_l[1],msg_l[2],msg_l[3],msg_l[4],msg_l[5]);
     for(int i = 0; i < 2 * 3; ++i) {
         if (msg_l[i] > 0) {
             printf("Coordinate is");
@@ -247,7 +248,7 @@ void calculate(XYZ dotsNumber, XYZ coordinate, XYZ range, XYZ uSize, AXYZ u, XYZ
                 recv[i % 2 == 0 ? i + 1 : i - 1] = tmp;
             } else {
                 int calculatedRank = convertPointToRank(range, rankMultiplier, coordinate);
-                printf("Rank is %d|| Point is (%d, %d, %d)|| CalRank %d\n", rank, coordinate.x, coordinate.y, coordinate.z, calculatedRank);
+                printf("Rank is %d, coordinate is (%d, %d, %d), calculated rank is %d", my_rank, coordinate.x,coordinate.y,coordinate.z, calculatedRank);
                 MPI_Send_init(send[i], msg_l[i] * srHelper[i / 2][2], MPI_DOUBLE, calculatedRank, i % 2, MPI_COMM_WORLD, &(request[cnt]));
                 cnt += 1;
                 MPI_Recv_init(recv[i], msg_l[i] * srHelper[i / 2][2], MPI_DOUBLE, calculatedRank, (i + 1) % 2, MPI_COMM_WORLD, &(request[cnt]));
