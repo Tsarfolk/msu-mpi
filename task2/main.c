@@ -112,30 +112,30 @@ int convertPointToRank(XYZ range, XYZ rankMultiplier, XYZ point) {
 }
 
 void start(int argc, char * argv[], int *processCount, int *rank) {
-//    MPI_Init(&argc, &argv);
-//    MPI_Comm_size(MPI_COMM_WORLD, processCount);
-//    MPI_Comm_rank(MPI_COMM_WORLD, rank);
     if (argc >= 1) {
         *processCount = atoi(argv[1]);
     } else {
         *processCount = 16;
     }
+    MPI_Init(&argc, &argv);
+    MPI_Comm_size(MPI_COMM_WORLD, processCount);
+    MPI_Comm_rank(MPI_COMM_WORLD, rank);
 }
 
 void syncThreads() {
-//    MPI_Barrier(MPI_COMM_WORLD);
+    MPI_Barrier(MPI_COMM_WORLD);
 }
 
 void startTimer(double *time) {
-//    *time = MPI_Wtime();
+    *time = MPI_Wtime();
 }
 
 void finishTimer(double *time) {
-//    *time = MPI_Wtime() - *time;
+    *time = MPI_Wtime() - *time;
 }
 
 void finilize() {
-//    MPI_Finalize();
+    MPI_Finalize();
 }
 
 void calculateU(AXYZ *u, XYZ uSize, XYZ dotsNumber, FXYZ baseCoordinate, FXYZ step) {
@@ -184,7 +184,7 @@ void parseCLIParams(char * argv[], int argc, int *gridSize, double *gridSteps) {
 
 void calculate(XYZ dotsNumber, XYZ coordinate, XYZ range, XYZ uSize, AXYZ u, XYZ rankMultiplier, FXYZ step, FXYZ baseCoordinate, int rank, double T_fin, int processCount, double executionTime) {
     int count = 2 * 2 * 3;
-//    MPI_Request *request = malloc(count * sizeof(MPI_Request));
+    MPI_Request *request = malloc(count * sizeof(MPI_Request));
     
     double **send = malloc(2 * 3 * sizeof(double *));
     double **recv = malloc(2 * 3 * sizeof(double *));
@@ -240,17 +240,17 @@ void calculate(XYZ dotsNumber, XYZ coordinate, XYZ range, XYZ uSize, AXYZ u, XYZ
                 recv[i % 2 == 0 ? i + 1 : i - 1] = tmp;
             } else {
                 int rank = convertPointToRank(range, rankMultiplier, coordinate);
-//                MPI_Send_init(send[i], msg_l[i] * srHelper[i / 2][2], MPI_DOUBLE, rank, i % 2, MPI_COMM_WORLD, &(request[cnt]));
+                MPI_Send_init(send[i], msg_l[i] * srHelper[i / 2][2], MPI_DOUBLE, rank, i % 2, MPI_COMM_WORLD, &(request[cnt]));
                 cnt += 1;
-//                MPI_Recv_init(recv[i], msg_l[i] * srHelper[i / 2][2], MPI_DOUBLE, rank, (i + 1) % 2, MPI_COMM_WORLD, &(request[cnt]));
+                MPI_Recv_init(recv[i], msg_l[i] * srHelper[i / 2][2], MPI_DOUBLE, rank, (i + 1) % 2, MPI_COMM_WORLD, &(request[cnt]));
                 cnt += 1;
             }
             (i % 2 == 0) ? addValueAt(i / 2, -1, &coordinate) : addValueAt(i / 2, 1, &coordinate);
         }
     }
     
-//    MPI_Startall(cnt, request);
-//    MPI_Waitall(cnt, request, MPI_STATUSES_IGNORE);
+    MPI_Startall(cnt, request);
+    MPI_Waitall(cnt, request, MPI_STATUSES_IGNORE);
     
     //считаем первое приближение
     XYZ point;
@@ -362,17 +362,17 @@ void calculate(XYZ dotsNumber, XYZ coordinate, XYZ range, XYZ uSize, AXYZ u, XYZ
                     recv[i % 2 == 0 ? i + 1 : i - 1] = tmp;
                 } else {
                     int rank = convertPointToRank(range, rankMultiplier, coordinate);
-                    // MPI_Send_init(send[i], msg_l[i] * srHelper[i / 2][2], MPI_DOUBLE, rank, i % 2, MPI_COMM_WORLD, &(request[cnt]));
+                     MPI_Send_init(send[i], msg_l[i] * srHelper[i / 2][2], MPI_DOUBLE, rank, i % 2, MPI_COMM_WORLD, &(request[cnt]));
                     cnt += 1;
-                    // MPI_Recv_init(recv[i], msg_l[i] * srHelper[i / 2][2], MPI_DOUBLE, rank, (i + 1) % 2, MPI_COMM_WORLD, &(request[cnt]));
+                     MPI_Recv_init(recv[i], msg_l[i] * srHelper[i / 2][2], MPI_DOUBLE, rank, (i + 1) % 2, MPI_COMM_WORLD, &(request[cnt]));
                     cnt += 1;
                 }
                 (i % 2 == 0) ? addValueAt(i / 2, -1, &coordinate) : addValueAt(i / 2, 1, &coordinate);
             }
         }
         //пересылки
-        //    MPI_Startall(cnt, request);
-        //    MPI_Waitall(cnt, request, MPI_STATUSES_IGNORE);
+        MPI_Startall(cnt, request);
+        MPI_Waitall(cnt, request, MPI_STATUSES_IGNORE);
 
         //используем гибридную версию распараллеливания
         //#pragma omp parallel for num_threads(2)
@@ -458,8 +458,8 @@ void calculate(XYZ dotsNumber, XYZ coordinate, XYZ range, XYZ uSize, AXYZ u, XYZ
         t += tau;
     }
     
-    //    MPI_Barrier(MPI_COMM_WORLD);
-    //    executionTime = MPI_Wtime() - executionTime;
+        MPI_Barrier(MPI_COMM_WORLD);
+        executionTime = MPI_Wtime() - executionTime;
     
     norm = 0;
     for(point.x = 0; point.x < dotsNumber.x; point.x += 1) {
@@ -478,22 +478,22 @@ void calculate(XYZ dotsNumber, XYZ coordinate, XYZ range, XYZ uSize, AXYZ u, XYZ
     if (rank == 0) {
         double *norms = calloc(processCount, sizeof(double));
         norms[0] = norm;
-//        MPI_Request *r = malloc(processCount * sizeof(MPI_Request));
+        MPI_Request *r = malloc(processCount * sizeof(MPI_Request));
         for(int i = 1; i < processCount; ++i){
-//            MPI_Recv_init(&(norms[i]), 1, MPI_DOUBLE, i, 0, MPI_COMM_WORLD, &(r[i - 1]));
+            MPI_Recv_init(&(norms[i]), 1, MPI_DOUBLE, i, 0, MPI_COMM_WORLD, &(r[i - 1]));
         }
-//        MPI_Startall(processCount - 1, r);
-//        MPI_Waitall(processCount - 1, r, MPI_STATUSES_IGNORE);
+        MPI_Startall(processCount - 1, r);
+        MPI_Waitall(processCount - 1, r, MPI_STATUSES_IGNORE);
         norm = 0;
         for(int i = 0; i < processCount; ++i){
             norm += norms[i];
         }
         norm = sqrt(norm);
-//        printf("norm over all is %f; time: %f\n", norm, time);
-//        free(r);
+        printf("norm over all is %f; time: %f\n", norm, time);
+        free(r);
     } else {
         printf("norm for process %d is %lf", rank, norm);
-//        MPI_Send(&norm, 1, MPI_DOUBLE, 0, 0, MPI_COMM_WORLD);
+        MPI_Send(&norm, 1, MPI_DOUBLE, 0, 0, MPI_COMM_WORLD);
     }
     
     free(u.x);
