@@ -237,10 +237,10 @@ void calculate(XYZ dotsNumber, XYZ coordinate, XYZ range, XYZ uSize, AXYZ u, XYZ
     int cnt = 0; //реальное колическво пересылок
     //инициализация пересылок
     for(int i = 0; i < 2 * 3; ++i) {
-        printf("Rank is %d, msg_l is %d %d %d %d %d %d, i is %d\n", rank, msg_l[0],msg_l[1],msg_l[2],msg_l[3],msg_l[4],msg_l[5], i);
+//        printf("Rank is %d, msg_l is %d %d %d %d %d %d, i is %d\n", rank, msg_l[0],msg_l[1],msg_l[2],msg_l[3],msg_l[4],msg_l[5], i);
         if (msg_l[i] > 0) {
             (i % 2 == 0) ? addValueAt(i / 2, -1, &coordinate) : addValueAt(i / 2, 1, &coordinate);
-            printf("xyz_to_rank is %d, my_rank is %d, point is (%d, %d, %d)\n", convertPointToRank(range, rankMultiplier, coordinate), rank, coordinate.x, coordinate.y, coordinate.z);
+//            printf("xyz_to_rank is %d, my_rank is %d, point is (%d, %d, %d)\n", convertPointToRank(range, rankMultiplier, coordinate), rank, coordinate.x, coordinate.y, coordinate.z);
             if (convertPointToRank(range, rankMultiplier, coordinate) == rank) {
                 //если блок отправляет данные сам себе, пересылки на самом деле не нужны
                 double *tmp = send[i];
@@ -483,7 +483,8 @@ void calculate(XYZ dotsNumber, XYZ coordinate, XYZ range, XYZ uSize, AXYZ u, XYZ
             }
         }
     }
-
+    
+    printf("norm calculation");
     if (rank == 0) {
         double *norms = calloc(processCount, sizeof(double));
         norms[0] = norm;
@@ -505,6 +506,7 @@ void calculate(XYZ dotsNumber, XYZ coordinate, XYZ range, XYZ uSize, AXYZ u, XYZ
         MPI_Send(&norm, 1, MPI_DOUBLE, 0, 0, MPI_COMM_WORLD);
     }
     
+    printf("free");
     free(u.x);
     free(u.y);
     free(u.z);
