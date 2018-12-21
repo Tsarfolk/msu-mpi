@@ -228,6 +228,9 @@ void calculate(XYZ dotsNumber, XYZ coordinate, XYZ range, XYZ uSize, AXYZ u, XYZ
     //инициализация пересылок
     for(int i = 0; i < 2 * 3; ++i) {
         if (msg_l[i] > 0) {
+            printf("Coordinate is");
+            print(coordinate);
+            printf("Rank is %d", rank);
             (i % 2 == 0) ? addValueAt(i / 2, -1, &coordinate) : addValueAt(i / 2, 1, &coordinate);
             if (convertPointToRank(range, rankMultiplier, coordinate) == rank) {
                 //если блок отправляет данные сам себе, пересылки на самом деле не нужны
