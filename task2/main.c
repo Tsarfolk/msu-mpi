@@ -227,22 +227,24 @@ void calculate(XYZ dotsNumber, XYZ coordinate, XYZ range, XYZ uSize, AXYZ u, XYZ
     int cnt = 0; //реальное колическво пересылок
     //инициализация пересылок
     for(int i = 0; i < 2 * 3; ++i) {
-        (i % 2 == 0) ? addValueAt(i / 2, -1, &coordinate) : addValueAt(i / 2, 1, &coordinate);
-        if (convertPointToRank(range, rankMultiplier, coordinate) == rank) {
-            //если блок отправляет данные сам себе, пересылки на самом деле не нужны
-            double *tmp = send[i];
-            send[i] = recv[i % 2 == 0 ? i + 1 : i - 1];
-            recv[i % 2 == 0 ? i + 1 : i - 1] = tmp;
-        } else {
-            int calculatedRank = convertPointToRank(range, rankMultiplier, coordinate);
-            printf("My rank is %d, calcluated = %d, cnt = %d", rank, calculatedRank, cnt);
-            print(coordinate);
-            MPI_Send_init(send[i], msg_l[i] * srHelper[i / 2][2], MPI_DOUBLE, calculatedRank, i % 2, MPI_COMM_WORLD, &(request[cnt]));
-            cnt += 1;
-            MPI_Recv_init(recv[i], msg_l[i] * srHelper[i / 2][2], MPI_DOUBLE, calculatedRank, (i + 1) % 2, MPI_COMM_WORLD, &(request[cnt]));
-            cnt += 1;
+        if (msg_l[i] > 0) {
+            (i % 2 == 0) ? addValueAt(i / 2, -1, &coordinate) : addValueAt(i / 2, 1, &coordinate);
+            if (convertPointToRank(range, rankMultiplier, coordinate) == rank) {
+                //если блок отправляет данные сам себе, пересылки на самом деле не нужны
+                double *tmp = send[i];
+                send[i] = recv[i % 2 == 0 ? i + 1 : i - 1];
+                recv[i % 2 == 0 ? i + 1 : i - 1] = tmp;
+            } else {
+                int calculatedRank = convertPointToRank(range, rankMultiplier, coordinate);
+                printf("My rank is %d, calcluated = %d, cnt = %d", rank, calculatedRank, cnt);
+                print(coordinate);
+                MPI_Send_init(send[i], msg_l[i] * srHelper[i / 2][2], MPI_DOUBLE, calculatedRank, i % 2, MPI_COMM_WORLD, &(request[cnt]));
+                cnt += 1;
+                MPI_Recv_init(recv[i], msg_l[i] * srHelper[i / 2][2], MPI_DOUBLE, calculatedRank, (i + 1) % 2, MPI_COMM_WORLD, &(request[cnt]));
+                cnt += 1;
+            }
+            (i % 2 == 0) ? addValueAt(i / 2, 1, &coordinate) : addValueAt(i / 2, -1, &coordinate);
         }
-        (i % 2 == 0) ? addValueAt(i / 2, 1, &coordinate) : addValueAt(i / 2, -1, &coordinate);
     }
 
     MPI_Startall(cnt, request);
