@@ -554,22 +554,24 @@ int main(int argc, char * argv[]) {
         printf("Grid size is %d\n", gridSize);
         printf("Tau %lf\n", gridSteps);
     }
-    
-    printf("sync threads\n");
-    syncThreads();
-    printf("continue threads\n");
-    startTimer(&executionTime);
-    
-    calcualteDistribution(&range, &rankMultiplier, processCount);
-    convertRankToPoint(rank, range, &coordinate);
-    initIteratorParams(gridSize, &step, &baseCoordinate, &dotsNumber, coordinate, range);
-    
-    XYZ uSize = init(1, dotsNumber.x, dotsNumber.x * dotsNumber.y);
-    printf("[565] My rank is %d", rank);
-    calculateU(&u, uSize, dotsNumber, baseCoordinate, step);
-    printf("[567] My rank is %d", rank);
-    calculate(dotsNumber, coordinate, range, uSize, u, rankMultiplier, step, baseCoordinate, rank, gridSteps, processCount, executionTime);
-    printf("[569] My rank is %d", rank);
-    finilize();
+
+    printf("remastered");
     return 0;
+//    printf("sync threads\n");
+//    syncThreads();
+//    printf("continue threads\n");
+//    startTimer(&executionTime);
+//
+//    calcualteDistribution(&range, &rankMultiplier, processCount);
+//    convertRankToPoint(rank, range, &coordinate);
+//    initIteratorParams(gridSize, &step, &baseCoordinate, &dotsNumber, coordinate, range);
+//
+//    XYZ uSize = init(1, dotsNumber.x, dotsNumber.x * dotsNumber.y);
+//    printf("[565] My rank is %d", rank);
+//    calculateU(&u, uSize, dotsNumber, baseCoordinate, step);
+//    printf("[567] My rank is %d", rank);
+//    calculate(dotsNumber, coordinate, range, uSize, u, rankMultiplier, step, baseCoordinate, rank, gridSteps, processCount, executionTime);
+//    printf("[569] My rank is %d", rank);
+//    finilize();
+//    return 0;
 }
