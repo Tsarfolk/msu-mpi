@@ -105,9 +105,9 @@ void convertRankToPoint(int rank, XYZ range, XYZ *point) {
 
 int convertPointToRank(XYZ range, XYZ rankMultiplier, XYZ point) {
     int rank = 0;
-    rank += rankMultiplier.x * (point.x % range.x);
-    rank += rankMultiplier.y * (point.y % range.y);
-    rank += rankMultiplier.z * (point.z % range.z);
+    rank += rankMultiplier.x * ((point.x + range.x) % range.x);
+    rank += rankMultiplier.y * ((point.y + range.y) % range.y);
+    rank += rankMultiplier.z * ((point.z + range.z) % range.z);
     return rank;
 }
 
