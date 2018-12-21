@@ -545,7 +545,6 @@ int main(int argc, char * argv[]) {
     calculate(dotsNumber, coordinate, range, uSize, u, rankMultiplier, step, baseCoordinate, rank, gridSteps, processCount, executionTime);
     
     syncThreads();
-    finishTimer(&executionTime);
     finilize();
     return 0;
 }
