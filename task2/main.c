@@ -261,7 +261,7 @@ void calculate(XYZ dotsNumber, XYZ coordinate, XYZ range, XYZ uSize, AXYZ u, XYZ
     MPI_Startall(cnt, request);
     MPI_Waitall(cnt, request, MPI_STATUSES_IGNORE);
     
-    считаем первое приближение
+//    считаем первое приближение
     XYZ point;
     for (point.x = 0; point.x < dotsNumber.x; point.x += 1) {
         for (point.y = 0; point.y < dotsNumber.y; point.y += 1) {
