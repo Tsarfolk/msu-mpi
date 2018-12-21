@@ -170,8 +170,8 @@ void initIteratorParams(int gridSize, FXYZ *step, FXYZ *baseCoordinate, XYZ *dot
 
 void parseCLIParams(char * argv[], int argc, int *gridSize, double *gridSteps) {
     if (argc >= 3) {
-        *gridSize = atoi(argv[2]);
-        *gridSteps = atof(argv[3]);
+        *gridSize = atoi(argv[1]);
+        *gridSteps = atof(argv[2]);
     } else {
         *gridSize = 64;
         *gridSteps = 0.03;
@@ -522,6 +522,11 @@ int main(int argc, char * argv[]) {
     XYZ range, rankMultiplier, coordinate, dotsNumber;
     FXYZ step, baseCoordinate;
     
+    printf("CLI params\n");
+    for (int i = 0; i < argc; i++) {
+        printf("Param %d is %s", i, argv[i]);
+    }
+    
     L = finit(M_PI, M_PI, M_PI);
     kNorm = sqrt(k[0] * k[0] + k[1] * k[1] + k[2] * k[2]);
     start(argc, argv, &processCount, &rank);
@@ -535,10 +540,10 @@ int main(int argc, char * argv[]) {
     
     syncThreads();
 //    startTimer(&executionTime);
-//    
+//
 //    calcualteDistribution(&range, &rankMultiplier, processCount);
 //    convertRankToPoint(rank, range, &coordinate);
-//    
+//
 //    initIteratorParams(gridSize, &step, &baseCoordinate, &dotsNumber, coordinate, range);
 //    XYZ uSize = init(1, dotsNumber.x, dotsNumber.x * dotsNumber.y);
 //    calculateU(&u, uSize, dotsNumber, baseCoordinate, step);
