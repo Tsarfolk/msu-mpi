@@ -248,79 +248,79 @@ void calculate(XYZ dotsNumber, XYZ coordinate, XYZ range, XYZ uSize, AXYZ u, XYZ
     MPI_Waitall(cnt, request, MPI_STATUSES_IGNORE);
     
     //считаем первое приближение
-//    XYZ point;
-//    for (point.x = 0; point.x < dotsNumber.x; point.x += 1) {
-//        for (point.y = 0; point.y < dotsNumber.y; point.y += 1) {
-//            for (point.z = 0; point.z < dotsNumber.z; point.z += 1) {
-//                //внутри блока реализована аппроксимация оператора Лапласса
-//                double delta = 0, d[3];
-//                long long int ind;
-//                bool f = false;
-//                for(int i = 3 - 1; i > -1; --i) {
-//                    double ub = 0, uc = 0, uf = 0;
-//                    ind = scalar(point, uSize);
-//                    uc = u.x[ind];
-//                    if (valueAt(i, point) == 0) {
-//                        if (msg_l[2 * i] == 0) {
-//                            uc = 0;
-//                            f = true;
-//                        }
-//
-//                        int index = valueAt(index_inf[2 * i], point) * srHelper[i][0] + valueAt(index_inf[2 * i + 1], point) * srHelper[i][1];
-//                        if (msg_l[2 * i] == 1) {
-//                            ub = recv[2 * i][index];
-//                        } else if (msg_l[2 * i] == 2) {
-//                            //ub = recv; uc = recv;
-//                            ub = recv[2 * i][index];
-//                            uc = recv[2 * i][index + srHelper[i][2]];
-//                        }
-//                    } else {
-//                        addValueAt(i, -1, &point);
-//                        ind = scalar(point, uSize);
-//                        ub = u.x[ind];
-//                        addValueAt(i, 1, &point);
-//                    }
-//                    if (valueAt(i, point) == valueAt(i, dotsNumber) - 1) {
-//                        if (msg_l[2 * i + 1] == 0){
-//                            uf = -ub; uc = 0;
-//                            f = true;
-//                        }
-//                        int index = valueAt(index_inf[2 * i], point) * srHelper[i][0] + valueAt(index_inf[2 * i + 1], point) * srHelper[i][1];
-//                        if (msg_l[2 * i + 1] == 1){
-//                            uf = recv[2 * i + 1][index];
-//                        }
-//                        if (msg_l[2 * i + 1] == 2){
-//                            //ub = recv; uc = recv;
-//                            uc = recv[2 * i + 1][index];
-//                            uf = recv[2 * i + 1][index + srHelper[i][2]];
-//                        }
-//                    } else{
-//                        addValueAt(i, 1, &point);
-//                        ind = scalar(point, uSize);
-//                        uf = u.x[ind];
-//                        addValueAt(i, -1, &point);
-//                    }
-//                    if (valueAt(i, point) == 0 && msg_l[2 * i] == 0) {
-//                        ub = -uf;
-//                    }
-//                    d[i] = ub - 2 * uc + uf;
-//                    d[i] /= fvalueAt(i, step) * fvalueAt(i, step);
-//
-//                    delta += d[i];
-//                }
-//                ind = scalar(point, uSize);
-//
-//                if (f) {
-//                    FXYZ fpoint = finit(baseCoordinate.x + step.x * point.x,
-//                                        baseCoordinate.y + step.y * point.y,
-//                                        baseCoordinate.z + step.z * point.z);
-//                    u.y[ind] = ut(fpoint, tau);
-//                } else {
-//                    u.y[ind] = u.x[ind] + (tau * tau / 2) * delta;
-//                }
-//            }
-//        }
-//    }
+    XYZ point;
+    for (point.x = 0; point.x < dotsNumber.x; point.x += 1) {
+        for (point.y = 0; point.y < dotsNumber.y; point.y += 1) {
+            for (point.z = 0; point.z < dotsNumber.z; point.z += 1) {
+                //внутри блока реализована аппроксимация оператора Лапласса
+                double delta = 0, d[3];
+                long long int ind;
+                bool f = false;
+                for(int i = 3 - 1; i > -1; --i) {
+                    double ub = 0, uc = 0, uf = 0;
+                    ind = scalar(point, uSize);
+                    uc = u.x[ind];
+                    if (valueAt(i, point) == 0) {
+                        if (msg_l[2 * i] == 0) {
+                            uc = 0;
+                            f = true;
+                        }
+
+                        int index = valueAt(index_inf[2 * i], point) * srHelper[i][0] + valueAt(index_inf[2 * i + 1], point) * srHelper[i][1];
+                        if (msg_l[2 * i] == 1) {
+                            ub = recv[2 * i][index];
+                        } else if (msg_l[2 * i] == 2) {
+                            //ub = recv; uc = recv;
+                            ub = recv[2 * i][index];
+                            uc = recv[2 * i][index + srHelper[i][2]];
+                        }
+                    } else {
+                        addValueAt(i, -1, &point);
+                        ind = scalar(point, uSize);
+                        ub = u.x[ind];
+                        addValueAt(i, 1, &point);
+                    }
+                    if (valueAt(i, point) == valueAt(i, dotsNumber) - 1) {
+                        if (msg_l[2 * i + 1] == 0){
+                            uf = -ub; uc = 0;
+                            f = true;
+                        }
+                        int index = valueAt(index_inf[2 * i], point) * srHelper[i][0] + valueAt(index_inf[2 * i + 1], point) * srHelper[i][1];
+                        if (msg_l[2 * i + 1] == 1){
+                            uf = recv[2 * i + 1][index];
+                        }
+                        if (msg_l[2 * i + 1] == 2){
+                            //ub = recv; uc = recv;
+                            uc = recv[2 * i + 1][index];
+                            uf = recv[2 * i + 1][index + srHelper[i][2]];
+                        }
+                    } else{
+                        addValueAt(i, 1, &point);
+                        ind = scalar(point, uSize);
+                        uf = u.x[ind];
+                        addValueAt(i, -1, &point);
+                    }
+                    if (valueAt(i, point) == 0 && msg_l[2 * i] == 0) {
+                        ub = -uf;
+                    }
+                    d[i] = ub - 2 * uc + uf;
+                    d[i] /= fvalueAt(i, step) * fvalueAt(i, step);
+
+                    delta += d[i];
+                }
+                ind = scalar(point, uSize);
+
+                if (f) {
+                    FXYZ fpoint = finit(baseCoordinate.x + step.x * point.x,
+                                        baseCoordinate.y + step.y * point.y,
+                                        baseCoordinate.z + step.z * point.z);
+                    u.y[ind] = ut(fpoint, tau);
+                } else {
+                    u.y[ind] = u.x[ind] + (tau * tau / 2) * delta;
+                }
+            }
+        }
+    }
     
     //вот где все веселье начиается
 //    double norm = 0;
