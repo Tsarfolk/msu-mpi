@@ -236,7 +236,7 @@ void calculate(XYZ dotsNumber, XYZ coordinate, XYZ range, XYZ uSize, AXYZ u, XYZ
                 recv[i % 2 == 0 ? i + 1 : i - 1] = tmp;
             } else {
                 int calculatedRank = convertPointToRank(range, rankMultiplier, coordinate);
-                printf("Rank is %d|| Rank is (%d, %d, %d)", rank, coordinate.x, coordinate.y, coordinate.z);
+                printf("Rank is %d|| Rank is (%d, %d, %d)\n", rank, coordinate.x, coordinate.y, coordinate.z);
                 MPI_Send_init(send[i], msg_l[i] * srHelper[i / 2][2], MPI_DOUBLE, calculatedRank, i % 2, MPI_COMM_WORLD, &(request[cnt]));
                 cnt += 1;
                 MPI_Recv_init(recv[i], msg_l[i] * srHelper[i / 2][2], MPI_DOUBLE, calculatedRank, (i + 1) % 2, MPI_COMM_WORLD, &(request[cnt]));
@@ -522,11 +522,6 @@ int main(int argc, char * argv[]) {
     AXYZ u;
     XYZ range, rankMultiplier, coordinate, dotsNumber;
     FXYZ step, baseCoordinate;
-    
-    printf("CLI params\n");
-    for (int i = 0; i < argc; i++) {
-        printf("Param %d is %s", i, argv[i]);
-    }
     
     L = finit(M_PI, M_PI, M_PI);
     kNorm = sqrt(k[0] * k[0] + k[1] * k[1] + k[2] * k[2]);
