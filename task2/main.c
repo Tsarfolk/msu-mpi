@@ -323,51 +323,51 @@ void calculate(XYZ dotsNumber, XYZ coordinate, XYZ range, XYZ uSize, AXYZ u, XYZ
     }
     
     //вот где все веселье начиается
-//    double norm = 0;
-//    double t = tau;
-//    while (t < T_fin) {
-//        //обмен u^n
-//        //подготовка массивов обмена данных
-//        for(int i = 0; i < 2 * 3; ++i){
-//            int i0 = i / 2, i1 = index_inf[2 * (i / 2)], i2 = index_inf[2 * (i / 2) + 1];
-//            int st = (i % 2 == 0 ? 0 : valueAt(i0, dotsNumber) - msg_l[i]);
-//            int ed = (i % 2 == 0 ? msg_l[i] : valueAt(i0, dotsNumber));
-//            XYZ point;
-//            for(setValueAt(i0, st, &point);  valueAt(i0, point) < ed; addValueAt(i0, 1, &point)) {
-//                for(setValueAt(i1, 0, &point);  valueAt(i1, point) < valueAt(i1, dotsNumber); addValueAt(i1, 1, &point)) {
-//                    for(setValueAt(i2, 0, &point);  valueAt(i2, point) < valueAt(i2, dotsNumber); addValueAt(i2, 1, &point)) {
-//                        long long int uIndex = scalar(point, uSize);
-//                        int mult = (i % 2 == 0 ? valueAt(i0, point) : valueAt(i0, point) - ed + msg_l[i]);
-//                        int sendIndex = valueAt(i1, point) * srHelper[i0][0] + valueAt(i2, point) * srHelper[i0][1] + mult * srHelper[i0][2];
-//                        send[i][sendIndex] = u.y[uIndex];
-//                    }
-//                }
-//            }
-//        }
+    double norm = 0;
+    double t = tau;
+    while (t < T_fin) {
+        //обмен u^n
+        //подготовка массивов обмена данных
+        for(int i = 0; i < 2 * 3; ++i){
+            int i0 = i / 2, i1 = index_inf[2 * (i / 2)], i2 = index_inf[2 * (i / 2) + 1];
+            int st = (i % 2 == 0 ? 0 : valueAt(i0, dotsNumber) - msg_l[i]);
+            int ed = (i % 2 == 0 ? msg_l[i] : valueAt(i0, dotsNumber));
+            XYZ point;
+            for(setValueAt(i0, st, &point);  valueAt(i0, point) < ed; addValueAt(i0, 1, &point)) {
+                for(setValueAt(i1, 0, &point);  valueAt(i1, point) < valueAt(i1, dotsNumber); addValueAt(i1, 1, &point)) {
+                    for(setValueAt(i2, 0, &point);  valueAt(i2, point) < valueAt(i2, dotsNumber); addValueAt(i2, 1, &point)) {
+                        long long int uIndex = scalar(point, uSize);
+                        int mult = (i % 2 == 0 ? valueAt(i0, point) : valueAt(i0, point) - ed + msg_l[i]);
+                        int sendIndex = valueAt(i1, point) * srHelper[i0][0] + valueAt(i2, point) * srHelper[i0][1] + mult * srHelper[i0][2];
+                        send[i][sendIndex] = u.y[uIndex];
+                    }
+                }
+            }
+        }
     
-        //инициализация пересылок
-//        int cnt = 0;
-//        for(int i = 0; i < 2 * 3; ++i){
-//            if (msg_l[i] > 0){
-//                (i % 2 == 0) ? addValueAt(i / 2, -1, &coordinate) : addValueAt(i / 2, 1, &coordinate);
-//                if (convertPointToRank(range, rankMultiplier, point) == rank) {
-//                    //если блок отправляет данные сам себе, пересылки на самом деле не нужны
-//                    double *tmp = send[i];
-//                    send[i] = recv[i % 2 == 0 ? i + 1 : i - 1];
-//                    recv[i % 2 == 0 ? i + 1 : i - 1] = tmp;
-//                } else {
-//                    int rank = convertPointToRank(range, rankMultiplier, coordinate);
-//                     MPI_Send_init(send[i], msg_l[i] * srHelper[i / 2][2], MPI_DOUBLE, rank, i % 2, MPI_COMM_WORLD, &(request[cnt]));
-//                    cnt += 1;
-//                     MPI_Recv_init(recv[i], msg_l[i] * srHelper[i / 2][2], MPI_DOUBLE, rank, (i + 1) % 2, MPI_COMM_WORLD, &(request[cnt]));
-//                    cnt += 1;
-//                }
-//                (i % 2 == 0) ? addValueAt(i / 2, -1, &coordinate) : addValueAt(i / 2, 1, &coordinate);
-//            }
-//        }
-        //пересылки
-//        MPI_Startall(cnt, request);
-//        MPI_Waitall(cnt, request, MPI_STATUSES_IGNORE);
+        инициализация пересылок
+        int cnt = 0;
+        for(int i = 0; i < 2 * 3; ++i){
+            if (msg_l[i] > 0){
+                (i % 2 == 0) ? addValueAt(i / 2, -1, &coordinate) : addValueAt(i / 2, 1, &coordinate);
+                if (convertPointToRank(range, rankMultiplier, point) == rank) {
+                    //если блок отправляет данные сам себе, пересылки на самом деле не нужны
+                    double *tmp = send[i];
+                    send[i] = recv[i % 2 == 0 ? i + 1 : i - 1];
+                    recv[i % 2 == 0 ? i + 1 : i - 1] = tmp;
+                } else {
+                    int rank = convertPointToRank(range, rankMultiplier, coordinate);
+                     MPI_Send_init(send[i], msg_l[i] * srHelper[i / 2][2], MPI_DOUBLE, rank, i % 2, MPI_COMM_WORLD, &(request[cnt]));
+                    cnt += 1;
+                     MPI_Recv_init(recv[i], msg_l[i] * srHelper[i / 2][2], MPI_DOUBLE, rank, (i + 1) % 2, MPI_COMM_WORLD, &(request[cnt]));
+                    cnt += 1;
+                }
+                (i % 2 == 0) ? addValueAt(i / 2, -1, &coordinate) : addValueAt(i / 2, 1, &coordinate);
+            }
+        }
+        пересылки
+        MPI_Startall(cnt, request);
+        MPI_Waitall(cnt, request, MPI_STATUSES_IGNORE);
 
         //используем гибридную версию распараллеливания
         //#pragma omp parallel for num_threads(2)
