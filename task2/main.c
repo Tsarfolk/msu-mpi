@@ -258,8 +258,11 @@ void calculate(XYZ dotsNumber, XYZ coordinate, XYZ range, XYZ uSize, AXYZ u, XYZ
         }
     }
 //
+    
+    print("wait 1, rank %d", rank);
     MPI_Startall(cnt, request);
     MPI_Waitall(cnt, request, MPI_STATUSES_IGNORE);
+    print("end wait 1, rank %d", rank);
     
 //    считаем первое приближение
     XYZ point;
@@ -380,8 +383,10 @@ void calculate(XYZ dotsNumber, XYZ coordinate, XYZ range, XYZ uSize, AXYZ u, XYZ
             }
         }
 //        пересылки
+        print("wait 2, rank %d", rank);
         MPI_Startall(cnt, request);
         MPI_Waitall(cnt, request, MPI_STATUSES_IGNORE);
+        print("end wait 2, rank %d", rank);
 
         //используем гибридную версию распараллеливания
         //#pragma omp parallel for num_threads(2)
@@ -553,8 +558,6 @@ int main(int argc, char * argv[]) {
     
     calcualteDistribution(&range, &rankMultiplier, processCount);
     convertRankToPoint(rank, range, &coordinate);
-    printf("Rank is %d", rank);
-    print(coordinate);
     initIteratorParams(gridSize, &step, &baseCoordinate, &dotsNumber, coordinate, range);
     
     XYZ uSize = init(1, dotsNumber.x, dotsNumber.x * dotsNumber.y);
